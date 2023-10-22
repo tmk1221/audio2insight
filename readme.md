@@ -14,7 +14,9 @@ cd uxr_bot
 ```
 
 ## 1 - Transcribe interviews (optional)
-Transcription converts your interview audio files into text transcripts. The installation is by far the most complex part of this entire project. You can skip all of #1 if you have another method for obtaining interview transcripts.
+Transcription converts your interview audio files into text transcripts. 
+
+Note: The installation below is by far the most complex part of this entire project. You can skip all of #1 if you have another method for obtaining interview transcripts.
 
 ### Installation
 These installation instructions are for MacOS. Install [Homebrew Package Manager](https://brew.sh/) if you don't already have it.
@@ -37,11 +39,12 @@ These installation instructions are for MacOS. Install [Homebrew Package Manager
     ```
 
 4. Install [WhisperX](https://github.com/m-bain/whisperX) (by Matthew Bain) with the following...
+    
     ```
     pip install git+https://github.com/m-bain/whisperx.git@f137f31de66f79cb988184b2d4b227d97147d702
     ```
 
-- **Note:** We are downloading a Sep 25, 2023 release of WhisperX. I tried to download the latest version as of October 21, 2023; however, I ran into dependency errors with onnxruntime-gpu (required by Pyannote), which apparently doesn't support Mac GPUs.
+    We are downloading a Sep 25, 2023 release of WhisperX. I tried to download the latest version as of October 21, 2023; however, I ran into dependency errors with onnxruntime-gpu (required by Pyannote), which apparently doesn't support Mac GPUs.
 
     You may also need to install ffmpeg, Rust, etc. See OpenAI instructions [here](https://github.com/openai/whisper#setup).
 
@@ -53,15 +56,21 @@ These installation instructions are for MacOS. Install [Homebrew Package Manager
 
     <img src="./images/hf_key.png" alt="Hugging Face API Key" width="80%" />
 
-8. Finally, agree to the conditions of the following three models: [Segmentation](https://huggingface.co/pyannote/segmentation), [Voice Activity Detection](https://huggingface.co/pyannote/voice-activity-detection), [Speaker Diarization](https://huggingface.co/pyannote/speaker-diarization).
+8. Finally, agree to the conditions of the following three models
+    - [Segmentation](https://huggingface.co/pyannote/segmentation)
+    - [Voice Activity Detection](https://huggingface.co/pyannote/voice-activity-detection)
+    - [Speaker Diarization](https://huggingface.co/pyannote/speaker-diarization).
 
 
 ### Usage
 1. Place .wav audio files from your user interviews in the `./raw_audio` folder.
+    
+    Often web meetings recordings will output video files, or another audio format like .mp3. There are free online converters for changing these files into .wav. [Convertio](https://convertio.co/) has been helpful for me.
 
 2. Update the following variables in `config.json`
     1. `whisper_model`: The Whisper model used for transcription (see the models below)
-        - **Note:** There are accuracy and speed tradeoffs. I recommend `small.en`. Using my 2020 Mac Mini CPU's, I achieved 2x speed and it was plenty accurate. "2x speed" meaning it takes about 30 minutes to transcribe an hour of audio.
+        
+        There are accuracy and speed tradeoffs. I recommend using `small.en`. With my 2020 Mac Mini CPU's, I achieved 2x speed and it was plenty accurate. "2x speed" meaning it takes about 30 minutes to transcribe an hour of audio.
 
 
         | Model Name          | Required VRAM  | Relative speed  |
@@ -74,22 +83,23 @@ These installation instructions are for MacOS. Install [Homebrew Package Manager
 
 
     2. `number_of_speakers`: The number of speaker voices present in the audio
-        - **Note:**: This is needed because spoken words are assigned their respective speakers in the final transcript. So, for example, in an in-depth interview, the number of speakers would be 2 - one for the moderator and one for the research participant.
+        
+        This is needed because the final trancript is speaker-labeled. For example, in an in-depth interview, the number of speakers would be 2 - one for the moderator and one for the research participant.
 
     3. `device`: The hardware used for computation (either "cpu" or "cuda")
-        - **Note:** I could only get "cpu" working on my Mac Mini. Aparently M1 GPUs are not supported by the model. Windows and Linux users should be able to take advantage of their local GPUs (to speed up processing) by changing `device` to "cuda".
+        
+        I could only get "cpu" working on my Mac Mini. Aparently M1 GPUs are not supported by the model. Windows and Linux users should be able to take advantage of their local GPUs (to speed up processing) by changing `device` to "cuda".
+ 
+    You can ignore the other variables in `./config.json` for now. These will be changed in later sections.
 
-    4. You can ignore the other variables in `./config.json`. These will be updated in later sections.
-
-3. Run the transcription script - this will transcribe all .wav files in the `./raw_audio` folder
-
-    - **Note 1:** [OpenAI's Whisper](https://github.com/openai/whisper) (Speech Recognition Model), and some other open-source models, will download to your machine. These models are all run on your local hardware and are free of cost.
-
+3. Run transcription - this will transcribe all .wav files in the `./raw_audio` folder
     ```
     python3 transcribe.py
     ```
 
-    - **Note 2:** The following warning messages get printed to my console after running transcribe. These can be disregarded. I don't have a technical reason for why, but the transcript quality 'speaks' for itself 😉.
+    [OpenAI's Whisper](https://github.com/openai/whisper) (Speech Recognition Model), and some other open-source models, will download to your machine. These models are all run on your local hardware and are free of cost.
+
+    The following warning messages get printed to my console after running transcribe. These can be disregarded. I don't have a technical reason for why, but the transcript quality 'speaks' for itself 😉.
 
     ```
     Lightning automatically upgraded your loaded checkpoint from v1.5.4 to v2.1.0. To apply the upgrade to your files permanently, run `python -m pytorch_lightning.utilities.upgrade_checkpoint ../.cache/torch/whisperx-vad-segmentation.bin`
