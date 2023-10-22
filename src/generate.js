@@ -11,11 +11,11 @@ import { config } from "dotenv";
 import fs from 'fs';
 import { createObjectCsvWriter } from 'csv-writer';
 
-config({ path: '../.env' });
+config({ path: './.env' });
 
 const openAIApiKey = process.env.OPENAI_API_KEY;
 
-const transcriptsPath = "../transcripts";
+const transcriptsPath = "./transcripts";
 
 // Function for processing a single file in transcripts directory
 async function processFile(file, model_name, queries) {
@@ -36,7 +36,7 @@ async function processFile(file, model_name, queries) {
     parentK: 2,
   });
 
-  const textLoader = new TextLoader(`../transcripts/${file}`);
+  const textLoader = new TextLoader(`./transcripts/${file}`);
   const parentDocuments = await textLoader.load();
 
   await retriever.addDocuments(parentDocuments);
@@ -72,7 +72,7 @@ async function processFile(file, model_name, queries) {
 }
 
 // Read in variables from config file, and run processFile on each file in transcripts directory
-fs.readFile("../config.json", "utf-8", async (err, data) => {
+fs.readFile("./config.json", "utf-8", async (err, data) => {
   if (err) {
     console.error('Error reading config file:', err);
     return;
@@ -83,7 +83,9 @@ fs.readFile("../config.json", "utf-8", async (err, data) => {
   const queries = config.discussion_guide;
 
   try {
-    const files = await fs.promises.readdir(transcriptsPath);
+    let files = await fs.promises.readdir(transcriptsPath);
+
+    files = files.filter((fileName) => fileName.endsWith('.txt') && fileName !== '.gitkeep');
     
     const resultsArray = [];
 
@@ -93,7 +95,7 @@ fs.readFile("../config.json", "utf-8", async (err, data) => {
       console.log(`---${file} Completed!---`)
     }
     const time = new Date().toISOString().replace(/:/g, '-');
-    const csvFilePath = `../output/interview_data_${time}.csv`;
+    const csvFilePath = `./output/interview_data_${time}.csv`;
 
     const questionKeys = Object.keys(queries);
     const questionNames = Object.values(queries);

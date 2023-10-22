@@ -2,36 +2,36 @@
 
 ## Setup
 1. Clone repository, and change into folder
-```
-gh repo clone tmk1221/uxr_bot
-cd uxr_bot
-```
+    ```
+    gh repo clone tmk1221/uxr_bot
+    cd uxr_bot
+    ```
 
 ## 1 - Transcribe interviews (optional)
 ### Installation
 These installation instructions are for MacOS. Install [Homebrew Package Manager](https://brew.sh/) if you don't already have it.
 
 1. Install Python3.10 - this specific version is highly recommended for running the transcription model
-```
-brew install python@3.10
-```
+    ```
+    brew install python@3.10
+    ```
 
 2. Install `virtualenv` Python package manager, and create a virtual environment for Python3.10
-```
-!pip install virtualenv
-python3.10 -m venv venv
-source venv/bin/activate
-```
+    ```
+    !pip install virtualenv
+    python3.10 -m venv venv
+    source venv/bin/activate
+    ```
 
 3. Install the following Python dependencies. Windows and Linux users please see [these alternatives](https://pytorch.org/get-started/previous-versions/#v200).
-```
-pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1 python-dotenv pyannote.audio
-```
+    ```
+    pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1 python-dotenv pyannote.audio
+    ```
 
 4. Install the [WhisperX](https://github.com/m-bain/whisperX) (by Matthew Bain) with the following...
-```
-pip install git+https://github.com/m-bain/whisperx.git@f137f31de66f79cb988184b2d4b227d97147d702
-```
+    ```
+    pip install git+https://github.com/m-bain/whisperx.git@f137f31de66f79cb988184b2d4b227d97147d702
+    ```
 
 - **Note:** We are downloading a Sep 25, 2023 release of WhisperX. I tried to download the latest version as of October 21, 2023; however, I ran into dependency errors with onnxruntime-gpu (required by Pyannote), which apparently doesn't support Mac GPUs.
 
@@ -43,7 +43,7 @@ pip install git+https://github.com/m-bain/whisperx.git@f137f31de66f79cb988184b2d
 
 7. Create a file named `.env` in the root directory of your project. In the file, paste in your token like so.
 
-    <img src="./images/HF_Key.png" alt="Hugging Face API Key" width="80%" />
+    <img src="./images/hf_key.png" alt="Hugging Face API Key" width="80%" />
 
 8. Finally, agree to the conditions of the following three models: [Segmentation](https://huggingface.co/pyannote/segmentation), [Voice Activity Detection](https://huggingface.co/pyannote/voice-activity-detection), [Speaker Diarization](https://huggingface.co/pyannote/speaker-diarization).
 
@@ -74,30 +74,84 @@ pip install git+https://github.com/m-bain/whisperx.git@f137f31de66f79cb988184b2d
     4. You can ignore the other variables in `./config.json`. These will be updated in later sections.
 
 3. Run the transcription script - this will transcribe all .wav files in the `./raw_audio` folder
-```
-python3 transcribe.py
-```
+
+    - **Note 1:** [OpenAI's Whisper](https://github.com/openai/whisper) (Speech Recognition Model), and some other open-source models, will download to your machine. These models are all run on your local hardware and are free of cost.
+
+    ```
+    python3 transcribe.py
+    ```
+
+    - **Note 2:** The following warning messages get printed to my console after running transcribe. These can be disregarded. I don't have a technical reason for why, but the transcript quality 'speaks' for itself 😉.
+
+    ```
+    Lightning automatically upgraded your loaded checkpoint from v1.5.4 to v2.1.0. To apply the upgrade to your files permanently, run `python -m pytorch_lightning.utilities.upgrade_checkpoint ../.cache/torch/whisperx-vad-segmentation.bin`
+    Model was trained with pyannote.audio 0.0.1, yours is 3.0.0. Bad things might happen unless you revert pyannote.audio to 0.x.
+    Model was trained with torch 1.10.0+cu102, yours is 2.0.0. Bad things might happen unless you revert torch to 1.x.
+    ```
 
 4. Transcribed interviews are placed in the `./transcripts` folder, ready for the following AI toolsets.
 
-## 2a. Generate structured interview data
+## 2. AI Research Assistant
+### Installation
+Install [Node.js](https://nodejs.org/) (LTS) on your system if you haven't already.
 
-## 2b. Talk to transcripts
-You can talk to specific transcripts directly from the command line. The command takes the following format.
-```
-node talk.js "name_of_transcript.txt" "put_your_question_here"
-```
+1. Create an OpenAI account, and create an API key [here](https://platform.openai.com/account/api-keys).
 
-The first and second argument (node and talk.js) will always be the same.
+2. If you haven't already, create a `.env` file in your project's root directory, and add the OpenAI API key to it, as shown below.
 
-The third argument is the name of the transcript (placed in quotes) located in the `./transcripts` directory.
+    <img src="./images/open_key.png" alt="OpenAI API Key" width="80%" />
 
-Finally, the fourth argument is the question you want to "ask" the transcript (placed in quotes). The output will print to the command line.
+3. Install Node dependencies.
+    ```
+    npm install ./src/
+    ```
 
-Here is an actual example:
+4. Update the `openai_model` variable in `./config.json` file. This is the OpenAI Large Language Model (LLM) used for all subsequent analyses.
+
+    - Note: At the time of writing, the most common options are: "gpt-3.5-turbo" or "gpt-4". GPT-4 is a more powerful model, but will cost more to use. For up-to-date information about available models, see [OpenAI's Model Overview](https://platform.openai.com/docs/models/overview)
+
+5. If you haven't done so already, add interview transcripts (must be .txt files) into the `./transcripts` folder. This is where the AI will access interview data.
+
+    - Note: You can transcribe your audio with WhisperX, as detailed above; however, this is not required. If you already have trancsripts from another source then manually add them into the `./transcripts` folder.
+
+### Usage
+There are two ways the AI Research Assistant can be used. First, it can generate structured data for an entire study. It creates a table of user responses to each question in your discussion guide, for each user in your study.
+
+The second way you can use the AI is to talk to a specific transcript. You can quickly ask a question of a specific transcript, and immediately get a response printed to the command-line.
+
+#### Structured Interview Data 
+1. Update the `discussion_guide` variable in the `./config.json` file. These questions should match the questions that were asked in the interviews, and which are present in the transcripts.
+
+- Note: Phrase these questions in the way that the moderator asked them to the user. The AI will essentially ask these questions of every transcript in your `./transcripts` folder.
+
+2. Run the generator bot
+    ```
+    node ./src/generate.js
+    ```
+
+    - Note: The AI's progress will get printed to your console as it asks each question of each transcript.
+
+
+3. Find the structured interview data (.csv) in the `./output` folder. You can open the file with a spreadsheet application like Numbers or Excel for easy read-out.
+
+#### Talk-To-Transcript
+1. Talking to the transcript always follows the below format:
+    ```
+    node ./src/talk.js "name_of_transcript.txt" "put_your_question_here"
+    ```
+
+    - The first two arguments (`node ./src/talk.js`) never change.
+
+    - The third argument is the name of the transcript (placed in quotes) that you want to talk to. As always this transcript must be located in the `./transcripts` folder.
+
+    - Finally, the fourth argument is the question you want to ask the transcript (placed in quotes)
+
+    - The answer will be immediately printed to the console.
+
+Here is a real-world example:
 ```
-node talk.js "Alicia (tourist)_small.en.txt" "Tell me about your virtual tour experiences. And how did you hear about them?"
+node ./src/talk.js "Alicia (tourist)_small.en.txt" "Tell me about your virtual tour experiences. And how did you hear about them?"
 ```
 ```
-Based on the conversation, Speaker 00 found out about virtual tours through the London Meetup site. They joined a group called "Undercover France" which normally meets up in person but has moved their activities online due to the lockdown. Speaker 01 also mentioned joining a London Facebook page where they heard about live streams. Speaker 00 mentioned that the virtual tours they have experienced so far have included concerts, discussion groups, and book clubs.
+Based on the conversation, Speaker 00 found out about virtual tours through the London Meetup site. They joined a group called "Undercover France" which normally meets up in person but has moved their activities online due to the lockdown. Speaker 00 mentioned that the virtual tours they have experienced so far have included concerts, discussion groups, and book clubs.
 ```

@@ -12,14 +12,14 @@ import { OpenAI } from "langchain/llms/openai";
 import { InMemoryStore } from "langchain/storage/in_memory";
 import { config } from "dotenv";
 
-config({ path: '../.env' });
+config({ path: './.env' });
 
 const openAIApiKey = process.env.OPENAI_API_KEY;
 
 const transcriptName = process.argv[2];
 
 let model_name
-fs.readFile("../config.json", "utf-8", async (err, data) => {
+fs.readFile("./config.json", "utf-8", async (err, data) => {
     if (err) {
       console.error('Error reading config file:', err);
       return;
@@ -29,7 +29,7 @@ fs.readFile("../config.json", "utf-8", async (err, data) => {
     model_name = config.openai_model;
 });
 
-const textLoader = new TextLoader(`../transcripts/${transcriptName}`);
+const textLoader = new TextLoader(`./transcripts/${transcriptName}`);
 const parentDocuments = await textLoader.load();
 
 const splitter = new RecursiveCharacterTextSplitter({
