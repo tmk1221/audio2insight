@@ -1,0 +1,7 @@
+venv
+.env
+transcripts/*
+node_modules
+raw_audio/*
+output/*
+src/node_modules

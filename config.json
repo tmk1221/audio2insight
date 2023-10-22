@@ -1,0 +1,10 @@
+{
+    "model":"gpt-3.5-turbo",
+    "discussion_guide": {
+        "Q1": "Tell me about your virtual tour experiences. And how did you hear about them?",
+        "Q2": "Why do you like virtual tours? What do you get out of virtual tours?",
+        "Q3": "What travel content do you consume?",
+        "Q4": "What could be improved about virtual tours and travel content?",
+        "Q5": "What features or recommendations do you have for the Trolley app?"
+      }
+}
