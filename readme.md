@@ -25,13 +25,15 @@ source venv/bin/activate
 
 3. Install the following Python dependencies. Windows and Linux users please see [these alternatives](https://pytorch.org/get-started/previous-versions/#v200).
 ```
-pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1 python-dotenv
+pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1 python-dotenv pyannote.audio
 ```
 
 4. Install the [WhisperX](https://github.com/m-bain/whisperX) (by Matthew Bain) with the following...
 ```
-pip install git+https://github.com/m-bain/whisperx.git
+pip install git+https://github.com/m-bain/whisperx.git@f137f31de66f79cb988184b2d4b227d97147d702
 ```
+    - Note: We are downloading a Sep 25, 2023 release of WhisperX. I tried to download the latest version as of October 21, 2023; however, I ran into dependency errors with onnxruntime-gpu (required by Pyannote), which apparently doesn't support Mac GPUs.
+
 You may also need to install ffmpeg, Rust, etc. See OpenAI instructions [here](https://github.com/openai/whisper#setup).
 
 5. Create a free Hugging Face account [here](https://huggingface.co/join?next=%2Fsettings%2Ftokens).
@@ -66,8 +68,12 @@ You may also need to install ffmpeg, Rust, etc. See OpenAI instructions [here](h
     3. `device`: The hardware used for computation (either "cpu" or "cuda")
         - Note: I could only get "cpu" working on my Mac Mini. Aparently M1 GPUs are not supported by the model. Windows and Linux users should be able to take advantage of their local GPUs (to speed up processing) by changing `device` to "cuda".
 
-You can chose between Whisper models of various sizes: "tiny.en", "base.en", "small.en", "medium.en", or "large-v2"
+    4. You can ignore the other variables in `./config.json`. These will be updated in later sections.
 
+3. Run the transcription script - this will transcribe all .wav files in the `./raw_audio` folder
+```
+python3 transcribe.py
+```
 
 ## 2a. Generate structured interview data
 
