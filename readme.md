@@ -1,9 +1,12 @@
-# UXR Assistant
+# UX Research Assistant
 
 ## 1 - Transcribe interviews (optional)
 1. Place one or more .wav files of your in-depth interviews into the `./raw_audio` directory.
 
 2. 
+
+You can chose between Whisper models of various sizes: "tiny.en", "base.en", "small.en", "medium.en", or "large-v2"
+
 
 ## 2a. Generate structured interview data
 

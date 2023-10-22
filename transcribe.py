@@ -1,10 +1,10 @@
 import whisperx
 import time
+import dotenv
+import os
+import json
 
-def transcribe(audio_file, model_size, hf_auth, num_speakers=None):
-    device = "cpu" 
-    batch_size = 16
-    compute_type = "int8"
+def transcribe(audio_file, model_size, hf_auth, device, compute_type, batch_size, num_speakers=None):
 
     # 1. Transcribe with original whisper (batched)
     model = whisperx.load_model(model_size, device, compute_type=compute_type)
@@ -72,29 +72,39 @@ def clean_transcript(input_text):
 
     return '\n'.join(output)
 
+# Transcribe all files in raw_audio folder
+raw_audio_path = "./raw_audio"
 
-audio_files = [
-    ("Barbara", "./raw_audio/Barbara_Virtual_Tourist.wav")
-]
+audio_files = []
+for filename in os.listdir(raw_audio_path):
+    if filename.endswith(".wav"):
+        file_path = os.path.join(raw_audio_path, filename)
+        audio_files.append((filename, file_path))
 
-# You can include: "tiny.en", "base.en", "small.en", "medium.en"
-models = ["small.en"]
-hf_auth = "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"
+dotenv.load_dotenv()
+hf_auth = os.getenv("HF_API_KEY")
 
-for name, file_path in audio_files:
-    for model in models:
-        print(f"Running for {name} with {model} model")
-        start_time = time.time()
+with open('./config.json') as config_file:
+    config = json.load(config_file)
+whisper_model = config["whisper_model"]
+number_of_speakers = config["number_of_speakers"]
+device = config["device"]
+compute_type = config["compute_type"]
+batch_size = config["batch_size"]
 
-        transcript = transcribe(file_path, model, hf_auth, num_speakers=2)
+for file in audio_files:
+    print(f"Running for {file} with {whisper_model} Whisper model")
+    start_time = time.time()
 
-        final = clean_transcript(transcript)
+    transcript = transcribe(file_path, whisper_model, hf_auth, device, compute_type, batch_size, num_speakers=number_of_speakers)
 
-        output_filename = f"./transcripts/{name}_{model}.txt"
+    final = clean_transcript(transcript)
 
-        with open(output_filename, "w") as text_file:
-            text_file.write(final)
+    output_filename = f"./transcripts/{file}_{whisper_model}.txt"
 
-        end_time = time.time()
-        elapsed_time = end_time - start_time
-        print(f"Elapsed time for {name} with {model}: {elapsed_time} seconds")
+    with open(output_filename, "w") as text_file:
+        text_file.write(final)
+
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    print(f"Elapsed time for {file} with {whisper_model}: {elapsed_time} seconds")

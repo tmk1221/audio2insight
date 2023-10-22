@@ -12,7 +12,7 @@ import { OpenAI } from "langchain/llms/openai";
 import { InMemoryStore } from "langchain/storage/in_memory";
 import { config } from "dotenv";
 
-config();
+config({ path: '../.env' });
 
 const openAIApiKey = process.env.OPENAI_API_KEY;
 
@@ -26,7 +26,7 @@ fs.readFile("../config.json", "utf-8", async (err, data) => {
     }
   
     const config = JSON.parse(data);
-    model_name = config.model;
+    model_name = config.openai_model;
 });
 
 const textLoader = new TextLoader(`../transcripts/${transcriptName}`);

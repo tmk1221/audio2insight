@@ -1,5 +1,11 @@
 {
-    "model":"gpt-3.5-turbo",
+    "whisper_model": "small.en",
+    "number_of_speakers": 2,
+    "device": "cpu",
+    "compute_type": "int8",
+    "batch_size": 16,
+
+    "openai_model":"gpt-3.5-turbo",
     "discussion_guide": {
         "Q1": "Tell me about your virtual tour experiences. And how did you hear about them?",
         "Q2": "Why do you like virtual tours? What do you get out of virtual tours?",

@@ -11,7 +11,7 @@ import { config } from "dotenv";
 import fs from 'fs';
 import { createObjectCsvWriter } from 'csv-writer';
 
-config();
+config({ path: '../.env' });
 
 const openAIApiKey = process.env.OPENAI_API_KEY;
 
@@ -79,7 +79,7 @@ fs.readFile("../config.json", "utf-8", async (err, data) => {
   }
 
   const config = JSON.parse(data);
-  const model_name = config.model;
+  const model_name = config.openai_model;
   const queries = config.discussion_guide;
 
   try {
