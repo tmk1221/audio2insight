@@ -1,7 +1,11 @@
 venv
 .env
-transcripts/*
 node_modules
-raw_audio/*
-output/*
 src/node_modules
+
+transcripts/*
+!transcripts/.gitkeep
+raw_audio/*
+!raw_audio/.gitkeep
+output/*
+!output/.gitkeep

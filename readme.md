@@ -1,9 +1,52 @@
 # UX Research Assistant
 
-## 1 - Transcribe interviews (optional)
-1. Place one or more .wav files of your in-depth interviews into the `./raw_audio` directory.
+## Setup
+1. Clone repository, and change into folder
+```
+gh repo clone tmk1221/uxr_bot
+cd uxr_bot
+```
 
-2. 
+## 1 - Transcribe interviews (optional)
+### Installation
+These installation instructions are for MacOS. Install [Homebrew Package Manager](https://brew.sh/) if you don't already have it.
+
+1. Install Python3.10 - this specific version is highly recommended for running the transcription model
+```
+brew install python@3.10
+```
+
+2. Install `virtualenv` Python package manager, and create a virtual environment for Python3.10
+```
+!pip install virtualenv
+python3.10 -m venv venv
+source venv/bin/activate
+```
+
+3. Install the following Python dependencies
+```
+pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1 python-dotenv
+```
+
+4. Install the [WhisperX](https://github.com/m-bain/whisperX) (by Matthew Bain) with the following...
+```
+pip install git+https://github.com/m-bain/whisperx.git
+```
+You may also need to install ffmpeg, Rust, etc. See OpenAI instructions [here](https://github.com/openai/whisper#setup).
+
+5. Create a free Hugging Face account [here](https://huggingface.co/join?next=%2Fsettings%2Ftokens).
+
+6. Once you have a Hugging Face account, create an Access Token (read) [here](https://huggingface.co/settings/tokens).
+
+7. Create a file named `.env` in the root directory of your project. In the file, paste in your token like so.
+
+    <img src="./images/HF_Key.png" alt="Hugging Face API Key" width="80%" />
+
+8. Finally, agree to the conditions of the following three models: [Segmentation](https://huggingface.co/pyannote/segmentation), [Voice Activity Detection](https://huggingface.co/pyannote/voice-activity-detection), [Speaker Diarization 3.0](https://huggingface.co/pyannote/speaker-diarization-3.0).
+
+
+### Usage
+1. Place .wav audio files into the 
 
 You can chose between Whisper models of various sizes: "tiny.en", "base.en", "small.en", "medium.en", or "large-v2"
 
