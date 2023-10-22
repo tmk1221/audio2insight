@@ -1,11 +1,17 @@
-# UX Research Assistant
+# audio2insight
+**audio2insight** is an open-source project that automates qualitative data analysis, and was built specifically for UX Researchers, Market Researchers, and Academics who run one-on-one, in-depth interviews.
 
-## Setup
-1. Clone repository, and change into folder
-    ```
-    gh repo clone tmk1221/uxr_bot
-    cd uxr_bot
-    ```
+As the name suggests, **audio2insight** covers the full analytical pipeline starting with audio files from interviews and ending with AI making sense of the data. First, audio files are converted into timestamped and speaker-labeled transcripts. Then the researcher can either talk to, and ask bespoke questions of, a specific transcript. Or, can run many transcripts through the entire discussion guide, which results in structured interview data for an entire study. 
+
+In either case, OpenAI LLMs answer questions based on the specific information contained within your interviews. You can think of it like chatGPT, but with an awareness of your qualitative research data. This toolset is intended to speed up analysis by automating mundane data processing, and amplify human researchers in general.
+
+Note: Installation and usage of **audio2insight** requires some familiarity with the command-line interface. I did my best to create a step-by-step guide for those who are not technically-minded. By far the most complex part is #1 - the transcription step. Luckily, this step is optional if you have another method for obtaining interview transcripts.
+
+**Get started by** cloning the repo, and changing into the folder:
+```
+gh repo clone tmk1221/uxr_bot
+cd uxr_bot
+```
 
 ## 1 - Transcribe interviews (optional)
 ### Installation
@@ -28,7 +34,7 @@ These installation instructions are for MacOS. Install [Homebrew Package Manager
     pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1 python-dotenv pyannote.audio
     ```
 
-4. Install the [WhisperX](https://github.com/m-bain/whisperX) (by Matthew Bain) with the following...
+4. Install [WhisperX](https://github.com/m-bain/whisperX) (by Matthew Bain) with the following...
     ```
     pip install git+https://github.com/m-bain/whisperx.git@f137f31de66f79cb988184b2d4b227d97147d702
     ```
@@ -131,22 +137,21 @@ The second way you can use the AI is to talk to a specific transcript. You can q
 
     - Note: The AI's progress will get printed to your console as it asks each question of each transcript.
 
-
 3. Find the structured interview data (.csv) in the `./output` folder. You can open the file with a spreadsheet application like Numbers or Excel for easy read-out.
 
 #### Talk-To-Transcript
-1. Talking to the transcript always follows the below format:
-    ```
-    node ./src/talk.js "name_of_transcript.txt" "put_your_question_here"
-    ```
+Talking to the transcript always follows the below format:
+```
+node ./src/talk.js "name_of_transcript.txt" "put_your_question_here"
+```
 
-    - The first two arguments (`node ./src/talk.js`) never change.
+- The first two arguments (`node ./src/talk.js`) never change.
 
-    - The third argument is the name of the transcript (placed in quotes) that you want to talk to. As always this transcript must be located in the `./transcripts` folder.
+- The third argument is the name of the transcript (placed in quotes) that you want to talk to. As always this transcript must be located in the `./transcripts` folder.
 
-    - Finally, the fourth argument is the question you want to ask the transcript (placed in quotes)
+- Finally, the fourth argument is the question you want to ask the transcript (placed in quotes)
 
-    - The answer will be immediately printed to the console.
+- The answer will be immediately printed to the console.
 
 Here is a real-world example:
 ```
