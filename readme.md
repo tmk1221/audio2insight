@@ -32,9 +32,10 @@ pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1 python-dotenv pya
 ```
 pip install git+https://github.com/m-bain/whisperx.git@f137f31de66f79cb988184b2d4b227d97147d702
 ```
-    - Note: We are downloading a Sep 25, 2023 release of WhisperX. I tried to download the latest version as of October 21, 2023; however, I ran into dependency errors with onnxruntime-gpu (required by Pyannote), which apparently doesn't support Mac GPUs.
 
-You may also need to install ffmpeg, Rust, etc. See OpenAI instructions [here](https://github.com/openai/whisper#setup).
+- **Note:** We are downloading a Sep 25, 2023 release of WhisperX. I tried to download the latest version as of October 21, 2023; however, I ran into dependency errors with onnxruntime-gpu (required by Pyannote), which apparently doesn't support Mac GPUs.
+
+    You may also need to install ffmpeg, Rust, etc. See OpenAI instructions [here](https://github.com/openai/whisper#setup).
 
 5. Create a free Hugging Face account [here](https://huggingface.co/join?next=%2Fsettings%2Ftokens).
 
@@ -44,7 +45,7 @@ You may also need to install ffmpeg, Rust, etc. See OpenAI instructions [here](h
 
     <img src="./images/HF_Key.png" alt="Hugging Face API Key" width="80%" />
 
-8. Finally, agree to the conditions of the following three models: [Segmentation](https://huggingface.co/pyannote/segmentation), [Voice Activity Detection](https://huggingface.co/pyannote/voice-activity-detection), [Speaker Diarization 3.0](https://huggingface.co/pyannote/speaker-diarization-3.0).
+8. Finally, agree to the conditions of the following three models: [Segmentation](https://huggingface.co/pyannote/segmentation), [Voice Activity Detection](https://huggingface.co/pyannote/voice-activity-detection), [Speaker Diarization](https://huggingface.co/pyannote/speaker-diarization).
 
 
 ### Usage
@@ -52,7 +53,8 @@ You may also need to install ffmpeg, Rust, etc. See OpenAI instructions [here](h
 
 2. Update the following variables in `config.json`
     1. `whisper_model`: The Whisper model used for transcription (see the models below)
-        - Note: There are accuracy and speed tradeoffs. I recommend `small.en`. Using my 2020 Mac Mini CPU's, I achieved 2x speed and it was plenty accurate. "2x speed" meaning it takes about 30 minutes to transcribe an hour of audio.
+        - **Note:** There are accuracy and speed tradeoffs. I recommend `small.en`. Using my 2020 Mac Mini CPU's, I achieved 2x speed and it was plenty accurate. "2x speed" meaning it takes about 30 minutes to transcribe an hour of audio.
+
 
         | Model Name          | Required VRAM  | Relative speed  |
         | ------------------- | -------------- | --------------- |
@@ -62,11 +64,12 @@ You may also need to install ffmpeg, Rust, etc. See OpenAI instructions [here](h
         | medium.en           | ~5 GB          | ~2x             |
         | large-v2            | ~10 GB         | 1x              |
 
+
     2. `number_of_speakers`: The number of speaker voices present in the audio
-        - Note: This is needed because spoken words are assigned their respective speakers in the final transcript. So, for example, in an in-depth interview, the number of speakers would be 2 - one for the moderator and one for the research participant.
+        - **Note:**: This is needed because spoken words are assigned their respective speakers in the final transcript. So, for example, in an in-depth interview, the number of speakers would be 2 - one for the moderator and one for the research participant.
 
     3. `device`: The hardware used for computation (either "cpu" or "cuda")
-        - Note: I could only get "cpu" working on my Mac Mini. Aparently M1 GPUs are not supported by the model. Windows and Linux users should be able to take advantage of their local GPUs (to speed up processing) by changing `device` to "cuda".
+        - **Note:** I could only get "cpu" working on my Mac Mini. Aparently M1 GPUs are not supported by the model. Windows and Linux users should be able to take advantage of their local GPUs (to speed up processing) by changing `device` to "cuda".
 
     4. You can ignore the other variables in `./config.json`. These will be updated in later sections.
 
@@ -74,6 +77,8 @@ You may also need to install ffmpeg, Rust, etc. See OpenAI instructions [here](h
 ```
 python3 transcribe.py
 ```
+
+4. Transcribed interviews are placed in the `./transcripts` folder, ready for the following AI toolsets.
 
 ## 2a. Generate structured interview data
 
