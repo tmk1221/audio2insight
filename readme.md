@@ -18,7 +18,7 @@ Transcription converts your interview audio files into text transcripts.
 
 Note: The installation below is by far the most complex part of this entire project. You can skip all of #1 if you have another method for obtaining interview transcripts.
 
-### Installation
+### 1.1 Setup
 These installation instructions are for MacOS. Install [Homebrew Package Manager](https://brew.sh/) if you don't already have it.
 
 1. Install Python3.10 - this specific version is highly recommended for running the transcription model
@@ -62,7 +62,7 @@ These installation instructions are for MacOS. Install [Homebrew Package Manager
     - [Speaker Diarization](https://huggingface.co/pyannote/speaker-diarization).
 
 
-### Usage
+### 1.2 Usage
 1. Place .wav audio files from your user interviews in the `./raw_audio` folder.
     
     Often web meetings recordings will output video files, or another audio format like .mp3. There are free online converters for changing these files into .wav. [Convertio](https://convertio.co/) has been helpful for me.
@@ -110,10 +110,10 @@ These installation instructions are for MacOS. Install [Homebrew Package Manager
 4. Transcribed interviews are placed in the `./transcripts` folder, ready for the following AI toolsets.
 
 ## 2. AI Research Assistant
-### Installation
+### 2.1 Setup
 Install [Node.js](https://nodejs.org/) (LTS) on your system if you haven't already.
 
-1. Create an OpenAI account, and create an API key [here](https://platform.openai.com/account/api-keys).
+1. Create an OpenAI account, then create an API key [here](https://platform.openai.com/account/api-keys).
 
 2. If you haven't already, create a `.env` file in your project's root directory, and add the OpenAI API key to it, as shown below.
 
@@ -126,21 +126,21 @@ Install [Node.js](https://nodejs.org/) (LTS) on your system if you haven't alrea
 
 4. Update the `openai_model` variable in `./config.json` file. This is the OpenAI Large Language Model (LLM) used for all subsequent analyses.
 
-    - Note: At the time of writing, the most common options are: "gpt-3.5-turbo" or "gpt-4". GPT-4 is a more powerful model, but will cost more to use. For up-to-date information about available models, see [OpenAI's Model Overview](https://platform.openai.com/docs/models/overview)
+    At the time of writing, the most common options are: "gpt-3.5-turbo" or "gpt-4". GPT-4 is a more powerful model, but will cost more to use. For up-to-date information about available models, see [OpenAI's Model Overview](https://platform.openai.com/docs/models/overview)
 
-5. If you haven't done so already, add interview transcripts (must be .txt files) into the `./transcripts` folder. This is where the AI will access interview data.
+5. If you haven't done so already, add interview transcripts (must be .txt files) into the `./transcripts` folder. The AI 'looks' here to access your interview data.
 
-    - Note: You can transcribe your audio with WhisperX, as detailed above; however, this is not required. If you already have trancsripts from another source then manually add them into the `./transcripts` folder.
+    You can transcribe your audio with WhisperX, as detailed above; however, this is not required. If you already have trancsripts from another source then manually add them into the `./transcripts` folder.
 
-### Usage
-There are two ways the AI Research Assistant can be used. First, it can generate structured data for an entire study. It creates a table of user responses to each question in your discussion guide, for each user in your study.
+### 2.2 Usage
+There are two ways the AI Research Assistant can be used. First, it can generate structured data for an entire study. It creates a table of user responses for each question in your discussion guide, for each user in your study.
 
-The second way you can use the AI is to talk to a specific transcript. You can quickly ask a question of a specific transcript, and immediately get a response printed to the command-line.
+You can also "talk" to a specific transcript. Ask a question of a specific transcript, and the response will immediately print to your console.
 
-#### Structured Interview Data 
+#### 2.2.1 Structured Interview Data 
 1. Update the `discussion_guide` variable in the `./config.json` file. These questions should match the questions that were asked in the interviews, and which are present in the transcripts.
 
-- Note: Phrase these questions in the way that the moderator asked them to the user. The AI will essentially ask these questions of every transcript in your `./transcripts` folder.
+Phrase these questions in the way the moderator asked them to the user. The AI will  ask these questions of every transcript in your `./transcripts` folder. The phrasing matters so that the AI can find the relevant parts of the transcript that are needed to answer the question.
 
 2. Run the generator bot
     ```
@@ -151,10 +151,12 @@ The second way you can use the AI is to talk to a specific transcript. You can q
 
 3. Find the structured interview data (.csv) in the `./output` folder. You can open the file with a spreadsheet application like Numbers or Excel for easy read-out.
 
-#### Talk-To-Transcript
+    The AI will do its best to find the relevant information in the transcripts in order to answer the questions. If it does not think it has the information needed to answer a question, it will say "I don't know" or "Based on the given context, I cannot provide an answer...". Expect that you will need to tweak the wording of the questions in order to get a desired response.
+
+#### 2.2.2 Talk-To-Transcript
 Talking to the transcript always follows the below format:
 ```
-node ./src/talk.js "name_of_transcript.txt" "put_your_question_here"
+node ./src/talk.js "name_of_transcript" "put_your_question_here"
 ```
 
 - The first two arguments (`node ./src/talk.js`) never change.
@@ -163,7 +165,7 @@ node ./src/talk.js "name_of_transcript.txt" "put_your_question_here"
 
 - Finally, the fourth argument is the question you want to ask the transcript (placed in quotes)
 
-- The answer will be immediately printed to the console.
+- The AI's answer will immediately print to your console.
 
 Here is a real-world example:
 ```
