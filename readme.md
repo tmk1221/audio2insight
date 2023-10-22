@@ -5,7 +5,7 @@ As the name suggests, **audio2insight** covers the full analytical pipeline star
 
 In either case, OpenAI LLMs answer questions based on the specific information contained within your interviews. You can think of it like chatGPT, but with an awareness of your qualitative research data. This toolset is intended to speed up analysis by automating mundane data processing, and amplify human researchers in general.
 
-Note: Installation and usage of **audio2insight** requires some familiarity with the command-line interface. I did my best to create a step-by-step guide for those who are not technically-minded. By far the most complex part is #1 - the transcription step. Luckily, this step is optional if you have another method for obtaining interview transcripts.
+Note: Installation and usage of **audio2insight** requires some familiarity with the command-line interface. I did my best to create a step-by-step guide for those who are not technically-minded.
 
 **Get started by** cloning the repo, and changing into the folder:
 ```
@@ -14,6 +14,8 @@ cd uxr_bot
 ```
 
 ## 1 - Transcribe interviews (optional)
+Transcription converts your interview audio files into text transcripts. The installation is by far the most complex part of this entire project. You can skip all of #1 if you have another method for obtaining interview transcripts.
+
 ### Installation
 These installation instructions are for MacOS. Install [Homebrew Package Manager](https://brew.sh/) if you don't already have it.
 
