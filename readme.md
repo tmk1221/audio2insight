@@ -23,7 +23,7 @@ python3.10 -m venv venv
 source venv/bin/activate
 ```
 
-3. Install the following Python dependencies
+3. Install the following Python dependencies. Windows and Linux users please see [these alternatives](https://pytorch.org/get-started/previous-versions/#v200).
 ```
 pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1 python-dotenv
 ```
@@ -46,7 +46,25 @@ You may also need to install ffmpeg, Rust, etc. See OpenAI instructions [here](h
 
 
 ### Usage
-1. Place .wav audio files into the 
+1. Place .wav audio files from your user interviews in the `./raw_audio` folder.
+
+2. Update the following variables in `config.json`
+    1. `whisper_model`: The Whisper model used for transcription (see the models below)
+        - Note: There are accuracy and speed tradeoffs. I recommend `small.en`. Using my 2020 Mac Mini CPU's, I achieved 2x speed and it was plenty accurate. "2x speed" meaning it takes about 30 minutes to transcribe an hour of audio.
+
+        | Model Name          | Required VRAM  | Relative speed  |
+        | ------------------- | -------------- | --------------- |
+        | tiny.en             | ~1 GB          | ~32x            |
+        | base.en             | ~1 GB          | ~16x            |
+        | small.en            | ~2 GB          | ~6x             |
+        | medium.en           | ~5 GB          | ~2x             |
+        | large-v2            | ~10 GB         | 1x              |
+
+    2. `number_of_speakers`: The number of speaker voices present in the audio
+        - Note: This is needed because spoken words are assigned their respective speakers in the final transcript. So, for example, in an in-depth interview, the number of speakers would be 2 - one for the moderator and one for the research participant.
+
+    3. `device`: The hardware used for computation (either "cpu" or "cuda")
+        - Note: I could only get "cpu" working on my Mac Mini. Aparently M1 GPUs are not supported by the model. Windows and Linux users should be able to take advantage of their local GPUs (to speed up processing) by changing `device` to "cuda".
 
 You can chose between Whisper models of various sizes: "tiny.en", "base.en", "small.en", "medium.en", or "large-v2"
 

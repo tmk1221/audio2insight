@@ -4,7 +4,14 @@ import dotenv
 import os
 import json
 
-def transcribe(audio_file, model_size, hf_auth, device, compute_type, batch_size, num_speakers=None):
+def transcribe(audio_file, model_size, hf_auth, device, num_speakers=None):
+
+    if device == "cpu":
+        compute_type = "int8"
+    else:
+        compute_type = "float16"
+
+    batch_size = 16
 
     # 1. Transcribe with original whisper (batched)
     model = whisperx.load_model(model_size, device, compute_type=compute_type)
@@ -89,14 +96,12 @@ with open('./config.json') as config_file:
 whisper_model = config["whisper_model"]
 number_of_speakers = config["number_of_speakers"]
 device = config["device"]
-compute_type = config["compute_type"]
-batch_size = config["batch_size"]
 
 for file in audio_files:
     print(f"Running for {file} with {whisper_model} Whisper model")
     start_time = time.time()
 
-    transcript = transcribe(file_path, whisper_model, hf_auth, device, compute_type, batch_size, num_speakers=number_of_speakers)
+    transcript = transcribe(file_path, whisper_model, hf_auth, device, num_speakers=number_of_speakers)
 
     final = clean_transcript(transcript)
 

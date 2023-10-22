@@ -2,8 +2,6 @@
     "whisper_model": "small.en",
     "number_of_speakers": 2,
     "device": "cpu",
-    "compute_type": "int8",
-    "batch_size": 16,
 
     "openai_model":"gpt-3.5-turbo",
     "discussion_guide": {
