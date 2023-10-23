@@ -105,7 +105,7 @@ for file in audio_files:
 
     final = clean_transcript(transcript)
 
-    output_filename = f"./transcripts/{file}_{whisper_model}.txt"
+    output_filename = f"./transcripts/{file[0]}_{whisper_model}.txt"
 
     with open(output_filename, "w") as text_file:
         text_file.write(final)

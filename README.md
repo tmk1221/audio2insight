@@ -36,9 +36,9 @@ These installation instructions are for MacOS. Install [Homebrew Package Manager
     source venv/bin/activate
     ```
 
-3. Install the following Python dependencies. Windows and Linux users please see [these alternatives](https://pytorch.org/get-started/previous-versions/#v200).
+3. Install the necessary Python dependencies
     ```
-    pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1 python-dotenv pyannote.audio
+    pip install -r requirements.txt
     ```
 
 4. Install [WhisperX](https://github.com/m-bain/whisperX) (by Matthew Bain) with the following...
