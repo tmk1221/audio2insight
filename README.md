@@ -17,7 +17,9 @@ cd audio2insight
 ```
 
 ## 1 - Transcribe interviews (optional)
-Transcription converts your interview audio files into text transcripts. 
+Transcription converts your interview audio files into time-stamped, speaker-labeled transcripts.
+
+![transcribe gif](./images/transcribe.gif)
 
 Note: The installation below is by far the most complex part of this entire project. You can skip all of #1 if you have another method for obtaining interview transcripts.
 
@@ -130,6 +132,8 @@ Install [Node.js](https://nodejs.org/) (LTS) on your system if you don't already
 ### 2.2 Usage
 There are two ways the AI Research Assistant can be used. First, it can generate structured data for an entire study. It creates a table of user responses for each question in your discussion guide, for each user in your study.
 
+![generate gif](./images/generate.gif)
+
 #### 2.2.1 Structured Interview Data 
 1. Update the `discussion_guide` variable in the `./config.json` file. These questions should match the questions that were asked in the interviews, and which are present in the transcripts.
 
@@ -148,6 +152,8 @@ There are two ways the AI Research Assistant can be used. First, it can generate
 
 #### 2.2.2 Talk-To-Transcript
 You can also "talk" to a specific transcript. Ask a question of a specific transcript, and the response will immediately print to your console.
+
+![talk gif](./images/talk.gif)
 
 In order to talk to a transcript, the command always follows the format below:
 ```
