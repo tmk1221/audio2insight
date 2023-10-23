@@ -58,11 +58,11 @@ These installation instructions are for MacOS. Install [Homebrew Package Manager
 
 
 ### 1.2 Usage
-1. Place .wav audio files from your user interviews in the `./raw_audio` folder.
+1. Place `.wav` audio files from your user interviews in the `./raw_audio` folder.
     
-    Often web meetings recordings will output video files, or another audio format like .mp3. There are free online converters for changing these files into .wav. [Convertio](https://convertio.co/) has been helpful for me.
+    Often virtual meeting recordings will output video files, or another audio format like `.mp3`. There are free online converters for changing these files into `.wav`. [Convertio](https://convertio.co/) has been helpful for me.
 
-2. Update the following variables in `config.json`
+2. Update the following variables in the `./config.json` file
     1. `whisper_model`: The Whisper model used for transcription (see the models below)
         
         There are accuracy and speed tradeoffs. I recommend using `small.en`. With my 2020 Mac Mini CPU's, I achieved 2x speed and it was plenty accurate. "2x speed" meaning it takes about 30 minutes to transcribe an hour of audio.
@@ -87,26 +87,26 @@ These installation instructions are for MacOS. Install [Homebrew Package Manager
  
     You can ignore the other variables in `./config.json` for now. These will be changed in later sections.
 
-3. Run transcription - this will transcribe all .wav files in the `./raw_audio` folder
+3. Run transcription - this will transcribe all `.wav` files in the `./raw_audio` folder
     ```
     python3 transcribe.py
     ```
 
-    [OpenAI's Whisper](https://github.com/openai/whisper) (Speech Recognition Model), and some other open-source models, will download to your machine. These models are all run on your local hardware and are free of cost.
+    [OpenAI's Whisper](https://github.com/openai/whisper) (Speech Recognition Model), and some other open-source models, will temporarily download to your machine. These models are all run on your local hardware and are free of cost.
 
     The following warning messages get printed to my console after running transcribe. These can be disregarded. I don't have a technical reason for why, but the transcript quality 'speaks' for itself 😉.
 
     ```
-    Lightning automatically upgraded your loaded checkpoint from v1.5.4 to v2.1.0. To apply the upgrade to your files permanently, run `python -m pytorch_lightning.utilities.upgrade_checkpoint ../.cache/torch/whisperx-vad-segmentation.bin`
+    Lightning automatically upgraded your loaded checkpoint from v1.5.4 to v2.0.9.post0. To apply the upgrade to your files permanently, run `python -m pytorch_lightning.utilities.upgrade_checkpoint --file ../.cache/torch/whisperx-vad-segmentation.bin`
     Model was trained with pyannote.audio 0.0.1, yours is 3.0.0. Bad things might happen unless you revert pyannote.audio to 0.x.
     Model was trained with torch 1.10.0+cu102, yours is 2.0.0. Bad things might happen unless you revert torch to 1.x.
     ```
 
-4. Transcribed interviews are placed in the `./transcripts` folder, ready for the following AI toolsets.
+4. Transcribed interviews are placed in the `./transcripts` folder, ready for the following AI Research Assistant.
 
 ## 2. AI Research Assistant
 ### 2.1 Setup
-Install [Node.js](https://nodejs.org/) (LTS) on your system if you haven't already.
+Install [Node.js](https://nodejs.org/) (LTS) on your system if you don't already have it. You can check if you do with `node --version`.
 
 1. Create an OpenAI account, then create an API key [here](https://platform.openai.com/account/api-keys).
 
@@ -130,28 +130,28 @@ Install [Node.js](https://nodejs.org/) (LTS) on your system if you haven't alrea
 ### 2.2 Usage
 There are two ways the AI Research Assistant can be used. First, it can generate structured data for an entire study. It creates a table of user responses for each question in your discussion guide, for each user in your study.
 
-You can also "talk" to a specific transcript. Ask a question of a specific transcript, and the response will immediately print to your console.
-
 #### 2.2.1 Structured Interview Data 
 1. Update the `discussion_guide` variable in the `./config.json` file. These questions should match the questions that were asked in the interviews, and which are present in the transcripts.
 
-Phrase these questions in the way the moderator asked them to the user. The AI will  ask these questions of every transcript in your `./transcripts` folder. The phrasing matters so that the AI can find the relevant parts of the transcript that are needed to answer the question.
+    Phrase these questions in the way the moderator asked them to the respondent. The AI will  ask these questions of every transcript in your `./transcripts` folder. The phrasing matters so that the AI can find the relevant parts of the transcript that are needed to answer the question.
 
 2. Run the generator bot
     ```
     node ./src/generate.js
     ```
 
-    - Note: The AI's progress will get printed to your console as it asks each question of each transcript.
+    The AI's progress will get printed to your console as it asks each question of each transcript.
 
 3. Find the structured interview data (.csv) in the `./output` folder. You can open the file with a spreadsheet application like Numbers or Excel for easy read-out.
 
     The AI will do its best to find the relevant information in the transcripts in order to answer the questions. If it does not think it has the information needed to answer a question, it will say "I don't know" or "Based on the given context, I cannot provide an answer...". Expect that you will need to tweak the wording of the questions in order to get a desired response.
 
 #### 2.2.2 Talk-To-Transcript
-Talking to the transcript always follows the below format:
+You can also "talk" to a specific transcript. Ask a question of a specific transcript, and the response will immediately print to your console.
+
+In order to talk to a transcript, the command always follows the format below:
 ```
-node ./src/talk.js "name_of_transcript" "put_your_question_here"
+node ./src/talk.js "name_of_transcript.txt" "put_your_question_here"
 ```
 
 - The first two arguments (`node ./src/talk.js`) never change.
@@ -159,8 +159,6 @@ node ./src/talk.js "name_of_transcript" "put_your_question_here"
 - The third argument is the name of the transcript (placed in quotes) that you want to talk to. As always this transcript must be located in the `./transcripts` folder.
 
 - Finally, the fourth argument is the question you want to ask the transcript (placed in quotes)
-
-- The AI's answer will immediately print to your console.
 
 Here is a real-world example:
 ```
