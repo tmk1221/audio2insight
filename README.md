@@ -2,7 +2,7 @@
 
 <img src="./images/logo_banner.png" alt="audio2insight logo"/>
 
-**audio2insight** is an open-source project that automates qualitative data analysis, and was built specifically for UX Researchers, Market Researchers, and Academics who run one-on-one, in-depth interviews.
+**audio2insight** is an open-source project that automates qualitative data analysis, and was built specifically for UX Researchers, Market Researchers, and Academics who conduct one-on-one, in-depth interviews.
 
 As the name suggests, **audio2insight** covers the full analytical pipeline starting with audio files from interviews and ending with AI making sense of the data. First, audio files are converted into timestamped and speaker-labeled transcripts. Then the researcher can either talk to, and ask bespoke questions of, a specific transcript. Or, can run many transcripts through the entire discussion guide, which results in structured interview data for an entire study. 
 
@@ -41,25 +41,17 @@ These installation instructions are for MacOS. Install [Homebrew Package Manager
     pip install -r requirements.txt
     ```
 
-4. Install [WhisperX](https://github.com/m-bain/whisperX) (by Matthew Bain) with the following...
-    
-    ```
-    pip install git+https://github.com/m-bain/whisperx.git@f137f31de66f79cb988184b2d4b227d97147d702
-    ```
-
-    We are downloading a Sep 25, 2023 release of WhisperX. I tried to download the latest version as of October 21, 2023; however, I ran into dependency errors with onnxruntime-gpu (required by Pyannote), which apparently doesn't support Mac GPUs.
-
     You may also need to install ffmpeg, Rust, etc. See OpenAI instructions [here](https://github.com/openai/whisper#setup).
 
-5. Create a free Hugging Face account [here](https://huggingface.co/join?next=%2Fsettings%2Ftokens).
+4. Create a free Hugging Face account [here](https://huggingface.co/join?next=%2Fsettings%2Ftokens).
 
-6. Once you have a Hugging Face account, create an Access Token (read) [here](https://huggingface.co/settings/tokens).
+5. Once you have a Hugging Face account, create an Access Token (read) [here](https://huggingface.co/settings/tokens).
 
-7. Create a file named `.env` in the root directory of your project. In the file, paste in your token like so.
+6. Create a file named `.env` in the root directory of your project. In the file, paste in your token like so.
 
     <img src="./images/hf_key.png" alt="Hugging Face API Key" width="80%" />
 
-8. Finally, agree to the conditions of the following three models
+7. Finally, agree to the conditions of the following three models
     - [Segmentation](https://huggingface.co/pyannote/segmentation)
     - [Voice Activity Detection](https://huggingface.co/pyannote/voice-activity-detection)
     - [Speaker Diarization](https://huggingface.co/pyannote/speaker-diarization).
