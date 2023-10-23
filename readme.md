@@ -1,4 +1,7 @@
 # audio2insight
+
+<img src="./images/logo_banner.png" alt="audio2insight logo"/>
+
 **audio2insight** is an open-source project that automates qualitative data analysis, and was built specifically for UX Researchers, Market Researchers, and Academics who run one-on-one, in-depth interviews.
 
 As the name suggests, **audio2insight** covers the full analytical pipeline starting with audio files from interviews and ending with AI making sense of the data. First, audio files are converted into timestamped and speaker-labeled transcripts. Then the researcher can either talk to, and ask bespoke questions of, a specific transcript. Or, can run many transcripts through the entire discussion guide, which results in structured interview data for an entire study. 
@@ -9,8 +12,8 @@ Note: Installation and usage of **audio2insight** requires some familiarity with
 
 **Get started by** cloning the repo, and changing into the folder:
 ```
-gh repo clone tmk1221/uxr_bot
-cd uxr_bot
+gh repo clone tmk1221/audio2insight
+cd audio2insight
 ```
 
 ## 1 - Transcribe interviews (optional)
