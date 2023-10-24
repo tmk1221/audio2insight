@@ -9,3 +9,5 @@ raw_audio/*
 !raw_audio/.gitkeep
 output/*
 !output/.gitkeep
+
+.DS_Store
