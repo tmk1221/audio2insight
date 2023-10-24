@@ -1,5 +1,0 @@
-{
-  "dependencies": {
-    "langchain": "file:src"
-  }
-}
